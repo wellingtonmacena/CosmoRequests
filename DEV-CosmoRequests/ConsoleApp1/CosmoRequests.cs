@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,11 +13,12 @@ namespace ConsoleApp1
     {
         WebRequest webRequest;
 
-        public CosmoResponse GET(string url, WebHeaderCollection headers = null)
+        public CosmoResponse GET(string url, WebHeaderCollection headers = null, string contentType = null)
         {
             this.webRequest = WebRequest.Create(url);
             this.webRequest.Method = "GET";
             this.webRequest.Headers = headers == null ? new WebHeaderCollection(): headers;
+            this.webRequest.ContentType = contentType == null ? "application/json" : contentType;
 
             HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
 
@@ -49,6 +50,77 @@ namespace ConsoleApp1
                 return new CosmoResponse(e.Message);
             }
               
+        }
+
+        public CosmoResponse PUT (string url, object data = null, WebHeaderCollection headers = null, string contentType = null)
+        {
+            this.webRequest = WebRequest.Create(url);
+            this.webRequest.Method = "PUT";
+            this.webRequest.Headers = headers == null ? new WebHeaderCollection() : headers;
+            this.webRequest.ContentType = contentType == null ? "application/json" : contentType;
+
+            if (data != null)
+            {
+                using (StreamWriter streamWriter = new StreamWriter(this.webRequest.GetRequestStream()))
+                {
+                    string json = JsonConvert.SerializeObject(data);
+                    streamWriter.Write(json);
+                }
+            }
+            try
+            {
+                HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
+                return new CosmoResponse(response);
+            }
+            catch (Exception e)
+            {
+                return new CosmoResponse(e.Message);
+            }
+
+        }
+
+        public CosmoResponse PATCH(string url, object data = null, WebHeaderCollection headers = null, string contentType = null)
+        {
+            this.webRequest = WebRequest.Create(url);
+            this.webRequest.Method = "PATCH";
+            this.webRequest.Headers = headers == null ? new WebHeaderCollection() : headers;
+            this.webRequest.ContentType = contentType == null ? "application/json" : contentType;
+
+            if (data != null)
+            {
+                using (StreamWriter streamWriter = new StreamWriter(this.webRequest.GetRequestStream()))
+                {
+                    string json = JsonConvert.SerializeObject(data);
+                    streamWriter.Write(json);
+                }
+            }
+            try
+            {
+                HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
+                return new CosmoResponse(response);
+            }
+            catch (Exception e)
+            {
+                return new CosmoResponse(e.Message);
+            }
+        }
+
+        public CosmoResponse DELETE(string url, WebHeaderCollection headers = null, string contentType = null)
+        {
+            this.webRequest = WebRequest.Create(url);
+            this.webRequest.Method = "PUT";
+            this.webRequest.Headers = headers == null ? new WebHeaderCollection() : headers;
+            this.webRequest.ContentType = contentType == null ? "application/json" : contentType;
+
+            try
+            {
+                HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
+                return new CosmoResponse(response);
+            }
+            catch (Exception e)
+            {
+                return new CosmoResponse(e.Message);
+            }
         }
     }
 }
