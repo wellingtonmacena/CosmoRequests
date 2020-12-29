@@ -44,10 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CosmoRequest.cs" />
-    <Compile Include="Helper.cs" />
+    <Compile Include="CosmoConverter.cs" />
+    <Compile Include="CosmoHTTPMethods.cs" />
+    <Compile Include="CosmoRequests.cs" />
+    <Compile Include="CosmoResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Response.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
