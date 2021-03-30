@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="CosmoConverter.cs" />
     <Compile Include="CosmoHTTPMethods.cs" />
-    <Compile Include="CosmoRequests.cs" />
+    <Compile Include="CosmoRequest.cs" />
     <Compile Include="CosmoResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

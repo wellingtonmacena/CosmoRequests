@@ -17,7 +17,7 @@ namespace CosmoRequests
             this.webRequest.ContentType = contentType == null ? "application/json" : contentType;
         }
 
-        private CosmoResponse HandleResponseRequest()
+        private CosmoResponse SendWebRequest()
         {
             try
             {
@@ -50,7 +50,7 @@ namespace CosmoRequests
         {
             this.FillWebRequest(url, "GET", headers, contentType);
 
-            return this.HandleResponseRequest();
+            return this.SendWebRequest();
         }
 
         public CosmoResponse POST(string url, object data = null, WebHeaderCollection headers = null, string contentType = null)
@@ -58,7 +58,7 @@ namespace CosmoRequests
             this.FillWebRequest(url, "POST", headers, contentType);
             this.SeriliazeData(data);
 
-            return this.HandleResponseRequest();
+            return this.SendWebRequest();
         }
 
         public CosmoResponse PUT(string url, object data = null, WebHeaderCollection headers = null, string contentType = null)
@@ -66,7 +66,7 @@ namespace CosmoRequests
             this.FillWebRequest(url, "PUT", headers, contentType);
             this.SeriliazeData(data);
 
-            return this.HandleResponseRequest();
+            return this.SendWebRequest();
         }
 
         public CosmoResponse PATCH(string url, object data = null, WebHeaderCollection headers = null, string contentType = null)
@@ -74,14 +74,14 @@ namespace CosmoRequests
             this.FillWebRequest(url, "PATCH", headers, contentType);
             this.SeriliazeData(data);
 
-            return this.HandleResponseRequest();
+            return this.SendWebRequest();
         }
 
         public CosmoResponse DELETE(string url, WebHeaderCollection headers = null, string contentType = null)
         {
             this.FillWebRequest(url, "DELETE", headers, contentType);
 
-            return this.HandleResponseRequest();
+            return this.SendWebRequest();
         }
     }
 }

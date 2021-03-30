@@ -44,7 +44,8 @@ namespace CosmoRequests
 
             switch (httpWebResponse.Method)
             {
-                case "GET": this.Method = CosmoHTTPMethods.GET;
+                case "GET":
+                    this.Method = CosmoHTTPMethods.GET;
                     break;
                 case "POST":
                     this.Method = CosmoHTTPMethods.POST;
@@ -63,28 +64,29 @@ namespace CosmoRequests
             }
         }
 
-        public CosmoResponse(string message, WebException webException) {
+        public CosmoResponse(string message, WebException webException)
+        {
 
             this.ClearAttributes();
             this.ErrorMessage = message;
             if (webException.Response != null)
             {
                 this.ContentLength = webException.Response.ContentLength;
-                this.ContentType = webException.Response.ContentType;               
+                this.ContentType = webException.Response.ContentType;
                 this.Headers = webException.Response.Headers;
                 this.IsError = true;
                 this.ResponseUri = webException.Response.ResponseUri;
                 this.StatusDescription = message.Split(':')[1].Substring(2, 3);
                 this.StatusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), this.StatusDescription);
                 this.SupportsHeaders = webException.Response.SupportsHeaders;
-            }           
+            }
         }
 
         public CosmoResponse(Exception e)
         {
             this.ClearAttributes();
 
-            this.ErrorMessage = e.Message;      
+            this.ErrorMessage = e.Message;
             this.IsError = true;
             try
             {
@@ -92,7 +94,7 @@ namespace CosmoRequests
                 this.StatusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), this.StatusDescription);
             }
             catch
-            { }          
+            { }
         }
 
         private void ClearAttributes()
@@ -123,22 +125,40 @@ namespace CosmoRequests
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"Body: {this.Body};");
-            sb.AppendLine($"ContentEncoding: {this.ContentEncoding};");
-            sb.AppendLine($"ContentType: {this.ContentType};");
-            sb.AppendLine($"ContentLength: {this.ContentLength};");
-            sb.AppendLine($"Cookies: {this.Cookies};");
-            sb.AppendLine($"Headers: {this.Headers};");
-            sb.AppendLine($"IsError: {this.IsError};");
-            sb.AppendLine($"ErrorMessage: {this.ErrorMessage};");
-            sb.AppendLine($"LastModified: {this.LastModified};");
-            sb.AppendLine($"Method: {this.Method};");
-            sb.AppendLine($"ProtocolVersion: {this.ProtocolVersion};");
-            sb.AppendLine($"ResponseUri: {this.ResponseUri};");
-            sb.AppendLine($"StatusCode: {this.StatusCode};");
-            sb.AppendLine($"StatusDescription: {this.StatusDescription};");
-            sb.AppendLine($"Server: {this.Server};");
-            sb.AppendLine($"SupportsHeaders: {this.SupportsHeaders};");
+            sb.AppendLine($"Body: {this.Body},");
+            sb.AppendLine($"ContentType: {this.ContentType},");
+            sb.AppendLine($"ContentLength: {this.ContentLength},");
+            sb.AppendLine($"Cookies: {this.Cookies},");
+            sb.AppendLine($"Headers: {this.Headers},");
+            sb.AppendLine($"ErrorMessage: {this.ErrorMessage},");
+            sb.AppendLine($"Method: {this.Method},");
+            sb.AppendLine($"ResponseUri: {this.ResponseUri},");
+            sb.AppendLine($"StatusCode: {this.StatusCode},");
+            sb.AppendLine($"StatusDescription: {this.StatusDescription},");
+            sb.AppendLine($"SupportsHeaders: {this.SupportsHeaders},");
+
+            return sb.ToString();
+        }
+
+        public string GetCompletedResponse()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"Body: {this.Body},");
+            sb.AppendLine($"ContentEncoding: {this.ContentEncoding},");
+            sb.AppendLine($"ContentType: {this.ContentType},");
+            sb.AppendLine($"ContentLength: {this.ContentLength},");
+            sb.AppendLine($"Cookies: {this.Cookies},");
+            sb.AppendLine($"Headers: {this.Headers},");
+            sb.AppendLine($"IsError: {this.IsError},");
+            sb.AppendLine($"ErrorMessage: {this.ErrorMessage},");
+            sb.AppendLine($"LastModified: {this.LastModified},");
+            sb.AppendLine($"Method: {this.Method},");
+            sb.AppendLine($"ProtocolVersion: {this.ProtocolVersion},");
+            sb.AppendLine($"ResponseUri: {this.ResponseUri},");
+            sb.AppendLine($"StatusCode: {this.StatusCode},");
+            sb.AppendLine($"StatusDescription: {this.StatusDescription},");
+            sb.AppendLine($"Server: {this.Server},");
+            sb.AppendLine($"SupportsHeaders: {this.SupportsHeaders},");
 
             return sb.ToString();
         }
