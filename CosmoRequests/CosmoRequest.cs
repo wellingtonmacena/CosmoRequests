@@ -7,21 +7,72 @@ namespace CosmoRequests
 {
     public class CosmoRequest
     {
-        WebRequest webRequest;
+        private WebRequest WebRequest;
 
-        private void FillWebRequest(string url, string method, WebHeaderCollection headers = null, string contentType = null)
+        public void DownloadCurrent(string url)
         {
-            this.webRequest = WebRequest.Create(url);
-            this.webRequest.Method = method;
-            this.webRequest.Headers = headers == null ? new WebHeaderCollection() : headers;
-            this.webRequest.ContentType = contentType == null ? "application/json" : contentType;
+            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
+            webRequest.Method = "GET";
+            webRequest.Timeout = 3000;
+            webRequest.BeginGetResponse(new AsyncCallback(PlayResponseAsync), webRequest);
+        }
+
+        private static void PlayResponseAsync(IAsyncResult asyncResult)
+        {
+            long total = 0;
+            long received = 0;
+            HttpWebRequest webRequest = (HttpWebRequest)asyncResult.AsyncState;
+
+            try
+            {
+                using (HttpWebResponse webResponse = (HttpWebResponse)webRequest.EndGetResponse(asyncResult))
+                {
+                    byte[] buffer = new byte[1024];
+
+                    FileStream fileStream = File.OpenWrite("t.pdf");
+                    using (Stream input = webResponse.GetResponseStream())
+                    {
+                        total = input.Length;
+
+                        int size = input.Read(buffer, 0, buffer.Length);
+                        while (size > 0)
+                        {
+                            fileStream.Write(buffer, 0, size);
+                            received += size;
+
+                            size = input.Read(buffer, 0, buffer.Length);
+                        }
+                    }
+
+                    fileStream.Flush();
+                    fileStream.Close();
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine();
+            }
+        }
+        private void FillWebRequest(string url, string method, WebHeaderCollection headers = null, RequestOptions options = null)
+        {
+            if (options == null)
+                options = new RequestOptions(3000);
+
+            WebRequest = WebRequest.Create(url);
+            WebRequest.Method = method;
+            WebRequest.Timeout = options.Timeout;
+            WebRequest.ContentType = options.ContentType;
+            WebRequest.UseDefaultCredentials = options.UseDefaultCredentials;
+            WebRequest.Timeout = options.Timeout;
+            WebRequest.Headers = headers ?? new WebHeaderCollection();
+
         }
 
         private CosmoResponse SendWebRequest()
         {
             try
             {
-                HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
+                HttpWebResponse response = (HttpWebResponse)WebRequest.GetResponse();
                 return new CosmoResponse(response);
             }
             catch (WebException webE)
@@ -34,11 +85,11 @@ namespace CosmoRequests
             }
         }
 
-        private void SeriliazeData(object data)
+        private void SerializeData(object data)
         {
             if (data != null)
             {
-                using (StreamWriter streamWriter = new StreamWriter(this.webRequest.GetRequestStream()))
+                using (StreamWriter streamWriter = new StreamWriter(WebRequest.GetRequestStream()))
                 {
                     string json = JsonConvert.SerializeObject(data);
                     streamWriter.Write(json);
@@ -46,42 +97,43 @@ namespace CosmoRequests
             }
         }
 
-        public CosmoResponse GET(string url, WebHeaderCollection headers = null, string contentType = null)
+        public CosmoResponse GET(string url, object data = null, RequestOptions options = null, WebHeaderCollection headers = null)
         {
-            this.FillWebRequest(url, "GET", headers, contentType);
+            FillWebRequest(url, "GET", headers, options);
+            SerializeData(data);
 
-            return this.SendWebRequest();
+            return SendWebRequest();
         }
 
-        public CosmoResponse POST(string url, object data = null, WebHeaderCollection headers = null, string contentType = null)
+        public CosmoResponse POST(string url, object data = null, RequestOptions options = null, WebHeaderCollection headers = null)
         {
-            this.FillWebRequest(url, "POST", headers, contentType);
-            this.SeriliazeData(data);
+            FillWebRequest(url, "POST", headers, options);
+            SerializeData(data);
 
-            return this.SendWebRequest();
+            return SendWebRequest();
         }
 
-        public CosmoResponse PUT(string url, object data = null, WebHeaderCollection headers = null, string contentType = null)
+        public CosmoResponse PUT(string url, object data = null, RequestOptions options = null, WebHeaderCollection headers = null)
         {
-            this.FillWebRequest(url, "PUT", headers, contentType);
-            this.SeriliazeData(data);
+            FillWebRequest(url, "PUT", headers, options);
+            SerializeData(data);
 
-            return this.SendWebRequest();
+            return SendWebRequest();
         }
 
-        public CosmoResponse PATCH(string url, object data = null, WebHeaderCollection headers = null, string contentType = null)
+        public CosmoResponse PATCH(string url, object data = null, RequestOptions options = null, WebHeaderCollection headers = null)
         {
-            this.FillWebRequest(url, "PATCH", headers, contentType);
-            this.SeriliazeData(data);
+            FillWebRequest(url, "PATCH", headers, options);
+            SerializeData(data);
 
-            return this.SendWebRequest();
+            return SendWebRequest();
         }
 
-        public CosmoResponse DELETE(string url, WebHeaderCollection headers = null, string contentType = null)
+        public CosmoResponse DELETE(string url, RequestOptions options = null, WebHeaderCollection headers = null)
         {
-            this.FillWebRequest(url, "DELETE", headers, contentType);
+            FillWebRequest(url, "DELETE", headers, options);
 
-            return this.SendWebRequest();
+            return SendWebRequest();
         }
     }
 }
