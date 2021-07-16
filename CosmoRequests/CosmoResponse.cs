@@ -13,33 +13,34 @@ namespace CosmoRequests
         public string ContentType { get; private set; }
         public long? ContentLength { get; private set; }
         public CookieCollection Cookies { get; private set; }
-        public bool IsError { get; private set; }
+        public bool IsSuccessful { get; private set; }
         public string ErrorMessage { get; private set; }
         public WebHeaderCollection Headers { get; private set; }
         public DateTime LastModified { get; private set; }
         public CosmoHTTPMethods? Method { get; private set; }
         public Version ProtocolVersion { get; private set; }
         public Uri ResponseUri { get; private set; }
-        public HttpStatusCode? StatusCode { get; private set; }
+        public int? StatusCode { get; private set; }
         public string StatusDescription { get; private set; }
         public string Server { get; private set; }
         public bool? SupportsHeaders { get; private set; }
 
         public CosmoResponse(HttpWebResponse httpWebResponse)
         {
-            this.Body = this.ConvertToString(httpWebResponse);
-            this.StatusCode = httpWebResponse.StatusCode;
+            this.Body = this.ConvertToString(httpWebResponse);        
             this.Headers = httpWebResponse.Headers;
             this.ContentEncoding = httpWebResponse.ContentEncoding;
             this.ContentType = httpWebResponse.ContentType;
             this.ContentLength = httpWebResponse.ContentLength;
             this.Cookies = httpWebResponse.Cookies;
-            this.IsError = false;
+            this.IsSuccessful = true;
             this.LastModified = httpWebResponse.LastModified;
             this.ResponseUri = httpWebResponse.ResponseUri;
             this.ProtocolVersion = httpWebResponse.ProtocolVersion;
             this.Server = httpWebResponse.Server;
             this.StatusDescription = httpWebResponse.StatusDescription;
+            HttpStatusCode httpStatusCode = ((HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), this.StatusDescription));
+            this.StatusCode = ((int)httpStatusCode);
             this.SupportsHeaders = httpWebResponse.SupportsHeaders;
 
             switch (httpWebResponse.Method)
@@ -60,7 +61,7 @@ namespace CosmoRequests
                     this.Method = CosmoHTTPMethods.PATCH;
                     break;
                 default:
-                    throw new Exception("Method not supported by this version of CosmoRequests 1.0.0");
+                    throw new Exception("Method not supported by this version of CosmoRequests 1.0.3");
             }
         }
 
@@ -74,10 +75,12 @@ namespace CosmoRequests
                 this.ContentLength = webException.Response.ContentLength;
                 this.ContentType = webException.Response.ContentType;
                 this.Headers = webException.Response.Headers;
-                this.IsError = true;
+                this.IsSuccessful = false;
                 this.ResponseUri = webException.Response.ResponseUri;
                 this.StatusDescription = message.Split(':')[1].Substring(2, 3);
-                this.StatusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), this.StatusDescription);
+                HttpStatusCode httpStatusCode = ((HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), this.StatusDescription));
+                this.StatusCode = ((int)httpStatusCode);
+                this.StatusDescription = Enum.Parse(typeof(HttpStatusCode), this.StatusDescription).ToString();
                 this.SupportsHeaders = webException.Response.SupportsHeaders;
             }
         }
@@ -87,11 +90,13 @@ namespace CosmoRequests
             this.ClearAttributes();
 
             this.ErrorMessage = e.Message;
-            this.IsError = true;
+            this.IsSuccessful = false;
             try
             {
                 this.StatusDescription = e.Message.Split(':')[1].Substring(2, 3);
-                this.StatusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), this.StatusDescription);
+                HttpStatusCode httpStatusCode = ((HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), this.StatusDescription));
+                this.StatusCode = ((int)httpStatusCode);
+                this.StatusDescription = Enum.Parse(typeof(HttpStatusCode), this.StatusDescription).ToString();
             }
             catch
             { }
@@ -124,13 +129,18 @@ namespace CosmoRequests
 
         public override string ToString()
         {
+            return this.Body;
+        }
+
+        public string GetResponse()
+        {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"Body: {this.Body},");
             sb.AppendLine($"ContentType: {this.ContentType},");
             sb.AppendLine($"ContentLength: {this.ContentLength},");
             sb.AppendLine($"Cookies: {this.Cookies},");
             sb.AppendLine($"Headers: {this.Headers},");
-            sb.AppendLine($"ErrorMessage: {this.ErrorMessage},");
+            sb.AppendLine($"IsSuccessful: {this.IsSuccessful},");
             sb.AppendLine($"Method: {this.Method},");
             sb.AppendLine($"ResponseUri: {this.ResponseUri},");
             sb.AppendLine($"StatusCode: {this.StatusCode},");
@@ -140,7 +150,7 @@ namespace CosmoRequests
             return sb.ToString();
         }
 
-        public string GetCompletedResponse()
+        public string GetCompleteResponse()
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"Body: {this.Body},");
@@ -149,7 +159,7 @@ namespace CosmoRequests
             sb.AppendLine($"ContentLength: {this.ContentLength},");
             sb.AppendLine($"Cookies: {this.Cookies},");
             sb.AppendLine($"Headers: {this.Headers},");
-            sb.AppendLine($"IsError: {this.IsError},");
+            sb.AppendLine($"IsSuccessful: {this.IsSuccessful},");
             sb.AppendLine($"ErrorMessage: {this.ErrorMessage},");
             sb.AppendLine($"LastModified: {this.LastModified},");
             sb.AppendLine($"Method: {this.Method},");

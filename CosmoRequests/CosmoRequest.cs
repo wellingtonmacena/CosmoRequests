@@ -9,12 +9,12 @@ namespace CosmoRequests
     {
         private WebRequest WebRequest;
 
-        public void DownloadCurrent(string url)
+        private IAsyncResult DownloadCurrent(string url)
         {
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
             webRequest.Method = "GET";
             webRequest.Timeout = 3000;
-            webRequest.BeginGetResponse(new AsyncCallback(PlayResponseAsync), webRequest);
+            return webRequest.BeginGetResponse(new AsyncCallback(PlayResponseAsync), webRequest);
         }
 
         private static void PlayResponseAsync(IAsyncResult asyncResult)
@@ -58,12 +58,17 @@ namespace CosmoRequests
             if (options == null)
                 options = new RequestOptions(3000);
 
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                   | SecurityProtocolType.Tls11
+                   | SecurityProtocolType.Tls12
+                   | SecurityProtocolType.Ssl3;
+
             WebRequest = WebRequest.Create(url);
             WebRequest.Method = method;
-            WebRequest.Timeout = options.Timeout;
             WebRequest.ContentType = options.ContentType;
             WebRequest.UseDefaultCredentials = options.UseDefaultCredentials;
-            WebRequest.Timeout = options.Timeout;
+            WebRequest.Timeout = (int)Math.Round(options.Timeout);
             WebRequest.Headers = headers ?? new WebHeaderCollection();
 
         }
@@ -97,7 +102,7 @@ namespace CosmoRequests
             }
         }
 
-        public CosmoResponse GET(string url, object data = null, RequestOptions options = null, WebHeaderCollection headers = null)
+        public CosmoResponse GET(string url, object data, RequestOptions options, WebHeaderCollection headers)
         {
             FillWebRequest(url, "GET", headers, options);
             SerializeData(data);
@@ -105,7 +110,40 @@ namespace CosmoRequests
             return SendWebRequest();
         }
 
-        public CosmoResponse POST(string url, object data = null, RequestOptions options = null, WebHeaderCollection headers = null)
+        public CosmoResponse GET(string url, object data, WebHeaderCollection headers)
+        {
+            FillWebRequest(url, "GET", headers, new RequestOptions());
+            SerializeData(data);
+
+            return SendWebRequest();
+        }
+
+        public CosmoResponse GET(string url, object data, RequestOptions options)
+        {
+            FillWebRequest(url, "GET", new WebHeaderCollection(), options);
+            SerializeData(data);
+
+            return SendWebRequest();
+        }
+
+        public CosmoResponse GET(string url, object data)
+        {
+            FillWebRequest(url, "GET", new WebHeaderCollection(), new RequestOptions());
+            SerializeData(data);
+
+            return SendWebRequest();
+        }
+
+        public CosmoResponse GET(string url)
+        {
+            FillWebRequest(url, "GET", new WebHeaderCollection(), new RequestOptions());
+
+            return SendWebRequest();
+        }
+
+
+
+        public CosmoResponse POST(string url, object data, RequestOptions options, WebHeaderCollection headers)
         {
             FillWebRequest(url, "POST", headers, options);
             SerializeData(data);
@@ -113,7 +151,40 @@ namespace CosmoRequests
             return SendWebRequest();
         }
 
-        public CosmoResponse PUT(string url, object data = null, RequestOptions options = null, WebHeaderCollection headers = null)
+        public CosmoResponse POST(string url, object data, WebHeaderCollection headers)
+        {
+            FillWebRequest(url, "POST", headers, new RequestOptions());
+            SerializeData(data);
+
+            return SendWebRequest();
+        }
+
+        public CosmoResponse POST(string url, object data, RequestOptions options)
+        {
+            FillWebRequest(url, "POST", new WebHeaderCollection(), options);
+            SerializeData(data);
+
+            return SendWebRequest();
+        }
+
+        public CosmoResponse POST(string url, object data)
+        {
+            FillWebRequest(url, "POST", new WebHeaderCollection(), new RequestOptions());
+            SerializeData(data);
+
+            return SendWebRequest();
+        }
+
+        public CosmoResponse POST(string url)
+        {
+            FillWebRequest(url, "POST", new WebHeaderCollection(), new RequestOptions());
+
+            return SendWebRequest();
+        }
+
+
+
+        public CosmoResponse PUT(string url, object data, RequestOptions options, WebHeaderCollection headers)
         {
             FillWebRequest(url, "PUT", headers, options);
             SerializeData(data);
@@ -121,7 +192,40 @@ namespace CosmoRequests
             return SendWebRequest();
         }
 
-        public CosmoResponse PATCH(string url, object data = null, RequestOptions options = null, WebHeaderCollection headers = null)
+        public CosmoResponse PUT(string url, object data, WebHeaderCollection headers)
+        {
+            FillWebRequest(url, "PUT", headers, new RequestOptions());
+            SerializeData(data);
+
+            return SendWebRequest();
+        }
+
+        public CosmoResponse PUT(string url, object data, RequestOptions options)
+        {
+            FillWebRequest(url, "PUT", new WebHeaderCollection(), new RequestOptions());
+            SerializeData(data);
+
+            return SendWebRequest();
+        }
+
+        public CosmoResponse PUT(string url, object data)
+        {
+            FillWebRequest(url, "PUT", new WebHeaderCollection(), new RequestOptions());
+            SerializeData(data);
+
+            return SendWebRequest();
+        }
+
+        public CosmoResponse PUT(string url)
+        {
+            FillWebRequest(url, "PUT", new WebHeaderCollection(), new RequestOptions());
+
+            return SendWebRequest();
+        }
+
+
+
+        public CosmoResponse PATCH(string url, object data, RequestOptions options, WebHeaderCollection headers)
         {
             FillWebRequest(url, "PATCH", headers, options);
             SerializeData(data);
@@ -129,9 +233,73 @@ namespace CosmoRequests
             return SendWebRequest();
         }
 
-        public CosmoResponse DELETE(string url, RequestOptions options = null, WebHeaderCollection headers = null)
+        public CosmoResponse PATCH(string url, object data, WebHeaderCollection headers)
+        {
+            FillWebRequest(url, "PATCH", headers, new RequestOptions());
+            SerializeData(data);
+
+            return SendWebRequest();
+        }
+
+        public CosmoResponse PATCH(string url, object data, RequestOptions options)
+        {
+            FillWebRequest(url, "PATCH", new WebHeaderCollection(), new RequestOptions());
+            SerializeData(data);
+
+            return SendWebRequest();
+        }
+
+        public CosmoResponse PATCH(string url, object data)
+        {
+            FillWebRequest(url, "PATCH", new WebHeaderCollection(), new RequestOptions());
+            SerializeData(data);
+
+            return SendWebRequest();
+        }
+
+        public CosmoResponse PATCH(string url)
+        {
+            FillWebRequest(url, "PATCH", new WebHeaderCollection(), new RequestOptions());
+
+            return SendWebRequest();
+        }
+
+
+        public CosmoResponse DELETE(string url, object data, RequestOptions options, WebHeaderCollection headers)
         {
             FillWebRequest(url, "DELETE", headers, options);
+            SerializeData(data);
+
+            return SendWebRequest();
+        }
+
+        public CosmoResponse DELETE(string url, object data, WebHeaderCollection headers)
+        {
+            FillWebRequest(url, "DELETE", headers, new RequestOptions());
+            SerializeData(data);
+
+            return SendWebRequest();
+        }
+
+        public CosmoResponse DELETE(string url, object data, RequestOptions options)
+        {
+            FillWebRequest(url, "DELETE", new WebHeaderCollection(), new RequestOptions());
+            SerializeData(data);
+
+            return SendWebRequest();
+        }
+
+        public CosmoResponse DELETE(string url, object data)
+        {
+            FillWebRequest(url, "DELETE", new WebHeaderCollection(), new RequestOptions());
+            SerializeData(data);
+
+            return SendWebRequest();
+        }
+
+        public CosmoResponse DELETE(string url)
+        {
+            FillWebRequest(url, "DELETE", new WebHeaderCollection(), new RequestOptions());
 
             return SendWebRequest();
         }

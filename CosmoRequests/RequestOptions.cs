@@ -4,18 +4,40 @@ namespace CosmoRequests
 {
     public class RequestOptions
     {
-        public int Timeout { get; set; }
+
+        /// <summary>
+        /// Returns the sum of the specified numbers.
+        /// </summary>
+        /// <param name="Timeout">The first non-negative integer to be used in the sum.</param>
+        /// <param name="ContentType">The second non-negative integer to be used in the sum.</param>
+        /// <returns>A 32-bit positive integer, representing the sum of the two specified numbers.</returns>
+
+        public double Timeout { get; set; }
         public string ContentType { get; set; }
         public bool UseDefaultCredentials { get; set; }
 
-        public RequestOptions(int timeout, string contentType, bool useDefaultCredentials)
+        ///<summary>
+        ///Value of Timeout must be set in milliseconds. e.g 3000.
+        ///</summary>
+        public RequestOptions(double timeout, string contentType, bool useDefaultCredentials)
         {
             Timeout = timeout;
             ContentType = contentType;
             UseDefaultCredentials = useDefaultCredentials;
         }
 
-        public RequestOptions(int timeout)
+        public RequestOptions()
+        {
+            
+            Timeout = 3000;
+            ContentType = "application/json";
+            UseDefaultCredentials = true;
+        }
+
+        ///<summary>
+        ///Value of Timeout must be set in milliseconds. e.g 3000.
+        ///</summary>
+        public RequestOptions(double timeout)
         {
             Timeout = timeout;
             ContentType = "application/json";

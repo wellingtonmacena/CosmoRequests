@@ -1,15 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+	  <TargetFrameworks>netstandard2.0;net45;net46;net47</TargetFrameworks>
     <Authors>Wellington Macena</Authors>
     <Company>Wellington Macena</Company>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Version>1.0.1</Version>
-    <Description>Library created in order to make requests and http responses easier using the native C # class WebRequest</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.3</Version>
+    <Description>Library created in order to make requests and http/https responses easier using the native C # class WebRequest</Description>
     <Copyright>2021</Copyright>
     <RepositoryUrl>https://github.com/wellingtonmacena/CosmoRequests</RepositoryUrl>
-    <PackageTags>HTTP, HTTP, HTTP Requests, Requests,</PackageTags>
+    <PackageTags>HTTPS Client, HTTP Client, HTTP Requests, HTTPS  Requests,</PackageTags>
+    <PackageIcon>horizontal_on_white_by_logaster.png</PackageIcon>
+    <PackageIconUrl />
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +22,13 @@
     <Reference Include="mscorlib">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\mscorlib.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Utils\horizontal_on_white_by_logaster.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
