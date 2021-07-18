@@ -13,7 +13,7 @@ namespace teste_4._5._2
         {
             CosmoRequest cosmoRequest = new CosmoRequest();
             var d = cosmoRequest.GET("https://rickandmortyapi.com/api/character/13ede");
-         
+          
             Console.WriteLine(d.GetCompleteResponse());
             Console.ReadKey();
         }
