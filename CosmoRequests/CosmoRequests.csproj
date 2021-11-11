@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFrameworks>netstandard2.0;net45;net46;net47</TargetFrameworks>
+	  <TargetFrameworks>netstandard2.0;net45;net46;net47;net48;netcoreapp3.1;netcoreapp5.0</TargetFrameworks>
     <Authors>Wellington Macena</Authors>
     <Company>Wellington Macena</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.3</Version>
-    <Description>Library created in order to make requests and http/https responses easier using the native C # class WebRequest</Description>
+    <Version>1.0.4</Version>
+    <Description>.NET Framework and .NET Core library created in order to make requests and http/https responses easier using the native C # class WebRequest</Description>
     <Copyright>2021</Copyright>
     <RepositoryUrl>https://github.com/wellingtonmacena/CosmoRequests</RepositoryUrl>
     <PackageTags>HTTPS Client, HTTP Client, HTTP Requests, HTTPS  Requests,</PackageTags>
@@ -16,12 +16,6 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="mscorlib">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\mscorlib.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>

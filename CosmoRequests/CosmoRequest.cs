@@ -9,60 +9,55 @@ namespace CosmoRequests
     {
         private WebRequest WebRequest;
 
-        private IAsyncResult DownloadCurrent(string url)
+        public FileInfo DOWNLOAD(string url)
         {
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
-            webRequest.Method = "GET";
-            webRequest.Timeout = 3000;
-            return webRequest.BeginGetResponse(new AsyncCallback(PlayResponseAsync), webRequest);
-        }
-
-        private static void PlayResponseAsync(IAsyncResult asyncResult)
-        {
-            long total = 0;
-            long received = 0;
-            HttpWebRequest webRequest = (HttpWebRequest)asyncResult.AsyncState;
-
             try
             {
-                using (HttpWebResponse webResponse = (HttpWebResponse)webRequest.EndGetResponse(asyncResult))
+                CosmoResponse d = GET(url);
+                if (d.IsSuccessful)
                 {
-                    byte[] buffer = new byte[1024];
+                    string contentType = d.ContentType.Split('/')[1];
 
-                    FileStream fileStream = File.OpenWrite("t.pdf");
-                    using (Stream input = webResponse.GetResponseStream())
-                    {
-                        total = input.Length;
+                    string dw = DateTime.Now.ToString("fffff");
+                    string downloadedFilePath = Directory.GetCurrentDirectory() + $"\\downloadedFile{dw}.{contentType}";
+                    WebClient client = new WebClient();
 
-                        int size = input.Read(buffer, 0, buffer.Length);
-                        while (size > 0)
-                        {
-                            fileStream.Write(buffer, 0, size);
-                            received += size;
 
-                            size = input.Read(buffer, 0, buffer.Length);
-                        }
-                    }
+                    client.DownloadFile(url, downloadedFilePath);
+                    Console.WriteLine();
 
-                    fileStream.Flush();
-                    fileStream.Close();
+                    return new FileInfo(downloadedFilePath);
                 }
+                return null;
             }
             catch (Exception)
             {
-                Console.WriteLine();
+
+                return null;
             }
+
         }
+
+
+
+
         private void FillWebRequest(string url, string method, WebHeaderCollection headers = null, RequestOptions options = null)
         {
             if (options == null)
                 options = new RequestOptions(3000);
 
-            ServicePointManager.Expect100Continue = true;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                   | SecurityProtocolType.Tls11
-                   | SecurityProtocolType.Tls12
-                   | SecurityProtocolType.Ssl3;
+            try
+            {
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Tls11
+                       | SecurityProtocolType.Tls12
+                       | SecurityProtocolType.Ssl3;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
 
             WebRequest = WebRequest.Create(url);
             WebRequest.Method = method;
