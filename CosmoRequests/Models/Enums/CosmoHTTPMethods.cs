@@ -1,5 +1,5 @@
 ﻿
-namespace CosmoRequests
+namespace CosmoRequests.Models.Enums
 {
     public enum CosmoHTTPMethods
     {

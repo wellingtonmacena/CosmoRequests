@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace CosmoRequests
+namespace CosmoRequests.Models
 {
     public class RequestOptions
     {
@@ -17,7 +17,7 @@ namespace CosmoRequests
         public bool UseDefaultCredentials { get; set; }
 
         ///<summary>
-        ///Value of Timeout must be set in milliseconds. e.g 3000.
+        ///Value of timeout must be set in milliseconds. e.g 3000.
         ///</summary>
         public RequestOptions(double timeout, string contentType, bool useDefaultCredentials)
         {
@@ -35,7 +35,7 @@ namespace CosmoRequests
         }
 
         ///<summary>
-        ///Value of Timeout must be set in milliseconds. e.g 3000.
+        ///Value of timeout must be set in milliseconds. e.g 3000.
         ///</summary>
         public RequestOptions(double timeout)
         {

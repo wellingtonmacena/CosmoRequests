@@ -1,10 +1,11 @@
-﻿using System;
+﻿using CosmoRequests.Models.Enums;
+using System;
 using System.IO;
 using System.Net;
 using System.Text;
 
 
-namespace CosmoRequests
+namespace CosmoRequests.Models
 {
     public class CosmoResponse
     {
@@ -39,7 +40,7 @@ namespace CosmoRequests
             this.ProtocolVersion = httpWebResponse.ProtocolVersion;
             this.Server = httpWebResponse.Server;
             this.StatusDescription = httpWebResponse.StatusDescription;
-            HttpStatusCode httpStatusCode = ((HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), this.StatusDescription));
+            HttpStatusCode httpStatusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), this.StatusDescription);
             this.StatusCode = ((int)httpStatusCode);
             this.SupportsHeaders = httpWebResponse.SupportsHeaders;
 
@@ -61,7 +62,7 @@ namespace CosmoRequests
                     this.Method = CosmoHTTPMethods.PATCH;
                     break;
                 default:
-                    throw new Exception("Method not supported by this version of CosmoRequests 1.0.3");
+                    throw new Exception("Method not supported by this version of CosmoRequests");
             }
         }
 

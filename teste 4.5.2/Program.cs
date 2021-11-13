@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CosmoRequests;
+﻿using CosmoRequests.Models;
+using System;
 
 namespace teste_4._5._2
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            CosmoRequest cosmoRequest = new CosmoRequest();
+           // CosmoRequest cosmoRequest = new CosmoRequest();
             //var d = cosmoRequest.GET("https://rickandmortyapi.com/api/character/13ede");
-          
-           //var d =  cosmoRequest.DOWNLOAD("https://chromedriver.storage.googleapis.com/92.0.4515.43/chromedriver_win32.zip");
-        
-            var d = cosmoRequest.DOWNLOAD("http://localhost:8080/pag2.xlsx");
 
+            //var d =  cosmoRequest.DOWNLOAD("https://chromedriver.storage.googleapis.com/92.0.4515.43/chromedriver_win32.zip");
+
+            CosmoRequest cosmoRequest = new CosmoRequest();
+            var d = cosmoRequest.DOWNLOAD("https://orimi.com/pdf-test.pdf");
 
             Console.ReadKey();
         }

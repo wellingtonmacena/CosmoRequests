@@ -3,39 +3,70 @@ using System;
 using System.IO;
 using System.Net;
 
-namespace CosmoRequests
+namespace CosmoRequests.Models
 {
     public class CosmoRequest
     {
         private WebRequest WebRequest;
 
-        public FileInfo DOWNLOAD(string url)
+        public DownloadResponse DOWNLOAD(string url)
         {
             try
             {
-                CosmoResponse d = GET(url);
-                if (d.IsSuccessful)
+                CosmoResponse response = GET(url);
+                if (response.IsSuccessful)
                 {
-                    string contentType = d.ContentType.Split('/')[1];
+                    string contentType = response.ContentType.Split('/')[1];
 
-                    string dw = DateTime.Now.ToString("fffff");
-                    string downloadedFilePath = Directory.GetCurrentDirectory() + $"\\downloadedFile{dw}.{contentType}";
+                    string dateTime = DateTime.Now.ToString("yyyy.MM.dd HH-mm-ss-fff");
+                    string downloadedFilePath = Directory.GetCurrentDirectory() + $"\\File-{dateTime}.{contentType}";
                     WebClient client = new WebClient();
-
 
                     client.DownloadFile(url, downloadedFilePath);
                     Console.WriteLine();
-
-                    return new FileInfo(downloadedFilePath);
+                   
+                    return new DownloadResponse(new FileInfo(downloadedFilePath), true);
                 }
-                return null;
+
+                return new DownloadResponse(null, false);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                return null;
+                Console.WriteLine($"Message: {ex.Message}\nStacktrace: {ex.StackTrace}\nSource: {ex.Source}");
+                return new DownloadResponse(null, false);
             }
+        }
 
+        public DownloadResponse DOWNLOAD(string url, string folderDestination)
+        {
+            try
+            {
+                CosmoResponse response = GET(url);
+                if (response.IsSuccessful)
+                {
+                    string contentType = response.ContentType.Split('/')[1];
+                    string dateTime = DateTime.Now.ToString("yyyy.MM.dd HH-mm-ss-fff");
+                    string downloadedFilePath;
+
+                    if (Directory.Exists(folderDestination))
+                         downloadedFilePath = folderDestination + $"\\File-{dateTime}.{contentType}";
+                    else
+                         downloadedFilePath = Directory.GetCurrentDirectory() + $"\\downloadedFile{dateTime}.{contentType}";
+
+                    WebClient client = new WebClient();
+
+                    client.DownloadFile(url, downloadedFilePath);
+
+                    return new DownloadResponse(new FileInfo(downloadedFilePath), true);
+                }
+
+                return new DownloadResponse(null, false);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Message: {ex.Message}\nStacktrace: {ex.StackTrace}\nSource: {ex.Source}");
+                return new DownloadResponse(null, false);
+            }
         }
 
 
@@ -56,7 +87,7 @@ namespace CosmoRequests
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine($"Message: {ex.Message}\nStacktrace: {ex.StackTrace}\nSource: {ex.Source}");
             }
 
             WebRequest = WebRequest.Create(url);
@@ -65,7 +96,6 @@ namespace CosmoRequests
             WebRequest.UseDefaultCredentials = options.UseDefaultCredentials;
             WebRequest.Timeout = (int)Math.Round(options.Timeout);
             WebRequest.Headers = headers ?? new WebHeaderCollection();
-
         }
 
         private CosmoResponse SendWebRequest()
