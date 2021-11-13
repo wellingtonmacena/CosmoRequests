@@ -82,8 +82,8 @@ namespace CosmoRequests.Models
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                        | SecurityProtocolType.Tls11
-                       | SecurityProtocolType.Tls12
-                       | SecurityProtocolType.Ssl3;
+                       | SecurityProtocolType.Tls12;
+                       
             }
             catch (Exception ex)
             {

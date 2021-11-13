@@ -17,10 +17,9 @@ namespace teste_netCore3._1
             //Console.WriteLine(d.GetCompleteResponse());
 
             CosmoRequest cosmoRequest = new CosmoRequest();
-            DownloadResponse d = cosmoRequest.DOWNLOAD("https://orimi.com/pdf-test.pdf", @"C:\Users\wellm\Desktop\");
-            DownloadResponse d1 = cosmoRequest.DOWNLOAD("https://orimi.com/pdf-test.pdf", @"C:\Users\wellm\Desktop\");
-            Console.WriteLine(d);
-            Console.WriteLine(d1);
+            DownloadResponse downloadResponse = cosmoRequest.DOWNLOAD("https://orimi.com/pdf-test.pdf", @"C:\Users\wellm\Desktop\");
+            Console.WriteLine(downloadResponse);
+
             Console.ReadKey();
         }
     }

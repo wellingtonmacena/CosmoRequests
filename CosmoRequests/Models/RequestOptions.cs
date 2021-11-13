@@ -4,14 +4,6 @@ namespace CosmoRequests.Models
 {
     public class RequestOptions
     {
-
-        /// <summary>
-        /// Returns the sum of the specified numbers.
-        /// </summary>
-        /// <param name="Timeout">The first non-negative integer to be used in the sum.</param>
-        /// <param name="ContentType">The second non-negative integer to be used in the sum.</param>
-        /// <returns>A 32-bit positive integer, representing the sum of the two specified numbers.</returns>
-
         public double Timeout { get; set; }
         public string ContentType { get; set; }
         public bool UseDefaultCredentials { get; set; }
