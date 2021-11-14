@@ -40,8 +40,11 @@ namespace CosmoRequests.Models
             this.ProtocolVersion = httpWebResponse.ProtocolVersion;
             this.Server = httpWebResponse.Server;
             this.StatusDescription = httpWebResponse.StatusDescription;
-            HttpStatusCode httpStatusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), this.StatusDescription);
-            this.StatusCode = ((int)httpStatusCode);
+            if (!string.IsNullOrWhiteSpace(StatusDescription)){
+                HttpStatusCode httpStatusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), this.StatusDescription);
+                this.StatusCode = ((int)httpStatusCode);
+            }
+           
             this.SupportsHeaders = httpWebResponse.SupportsHeaders;
 
             switch (httpWebResponse.Method)
@@ -78,10 +81,13 @@ namespace CosmoRequests.Models
                 this.Headers = webException.Response.Headers;
                 this.IsSuccessful = false;
                 this.ResponseUri = webException.Response.ResponseUri;
-                this.StatusDescription = message.Split(':')[1].Substring(2, 3);
-                HttpStatusCode httpStatusCode = ((HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), this.StatusDescription));
-                this.StatusCode = ((int)httpStatusCode);
-                this.StatusDescription = Enum.Parse(typeof(HttpStatusCode), this.StatusDescription).ToString();
+                if (!string.IsNullOrWhiteSpace(StatusDescription))
+                {
+                    this.StatusDescription = message.Split(':')[1].Substring(2, 3);
+                    HttpStatusCode httpStatusCode = ((HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), this.StatusDescription));
+                    this.StatusCode = ((int)httpStatusCode);
+                    this.StatusDescription = Enum.Parse(typeof(HttpStatusCode), this.StatusDescription).ToString();
+                }
                 this.SupportsHeaders = webException.Response.SupportsHeaders;
             }
         }
@@ -94,10 +100,13 @@ namespace CosmoRequests.Models
             this.IsSuccessful = false;
             try
             {
-                this.StatusDescription = e.Message.Split(':')[1].Substring(2, 3);
-                HttpStatusCode httpStatusCode = ((HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), this.StatusDescription));
-                this.StatusCode = ((int)httpStatusCode);
-                this.StatusDescription = Enum.Parse(typeof(HttpStatusCode), this.StatusDescription).ToString();
+                if (!string.IsNullOrWhiteSpace(StatusDescription))
+                {
+                    this.StatusDescription = e.Message.Split(':')[1].Substring(2, 3);
+                    HttpStatusCode httpStatusCode = ((HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), this.StatusDescription));
+                    this.StatusCode = ((int)httpStatusCode);
+                    this.StatusDescription = Enum.Parse(typeof(HttpStatusCode), this.StatusDescription).ToString();
+                }
             }
             catch
             { }
@@ -130,12 +139,16 @@ namespace CosmoRequests.Models
 
         public override string ToString()
         {
-            return this.Body;
+            if(this.Body == null)
+                return GetCompleteResponse();
+            else
+                return this.Body;
         }
 
         public string GetResponse()
         {
             StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"StatusCode: {this.StatusCode},");
             sb.AppendLine($"Body: {this.Body},");
             sb.AppendLine($"ContentType: {this.ContentType},");
             sb.AppendLine($"ContentLength: {this.ContentLength},");
@@ -143,8 +156,7 @@ namespace CosmoRequests.Models
             sb.AppendLine($"Headers: {this.Headers},");
             sb.AppendLine($"IsSuccessful: {this.IsSuccessful},");
             sb.AppendLine($"Method: {this.Method},");
-            sb.AppendLine($"ResponseUri: {this.ResponseUri},");
-            sb.AppendLine($"StatusCode: {this.StatusCode},");
+            sb.AppendLine($"ResponseUri: {this.ResponseUri},");            
             sb.AppendLine($"StatusDescription: {this.StatusDescription},");
             sb.AppendLine($"SupportsHeaders: {this.SupportsHeaders},");
 
@@ -154,6 +166,7 @@ namespace CosmoRequests.Models
         public string GetCompleteResponse()
         {
             StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"StatusCode: {this.StatusCode},");
             sb.AppendLine($"Body: {this.Body},");
             sb.AppendLine($"ContentEncoding: {this.ContentEncoding},");
             sb.AppendLine($"ContentType: {this.ContentType},");
@@ -166,7 +179,6 @@ namespace CosmoRequests.Models
             sb.AppendLine($"Method: {this.Method},");
             sb.AppendLine($"ProtocolVersion: {this.ProtocolVersion},");
             sb.AppendLine($"ResponseUri: {this.ResponseUri},");
-            sb.AppendLine($"StatusCode: {this.StatusCode},");
             sb.AppendLine($"StatusDescription: {this.StatusDescription},");
             sb.AppendLine($"Server: {this.Server},");
             sb.AppendLine($"SupportsHeaders: {this.SupportsHeaders},");

@@ -18,9 +18,13 @@ namespace CosmoRequests.Models
             UseDefaultCredentials = useDefaultCredentials;
         }
 
-        public RequestOptions()
+        public RequestOptions(string contentType)
         {
-            
+            ContentType = contentType;
+        }
+
+        public RequestOptions()
+        {           
             Timeout = 3000;
             ContentType = "application/json";
             UseDefaultCredentials = true;

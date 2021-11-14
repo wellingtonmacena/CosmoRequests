@@ -5,17 +5,19 @@
     <Authors>Wellington Macena</Authors>
     <Company>Wellington Macena</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.5</Version>
+    <Version>2.0.0</Version>
     <Description>.NET Framework and .NET Core library created in order to make requests and http/https responses easier using the native C # class WebRequest</Description>
     <Copyright>2021</Copyright>
     <RepositoryUrl>https://github.com/wellingtonmacena/CosmoRequests</RepositoryUrl>
     <PackageTags>HTTPS Client, HTTP Client, HTTP Requests, HTTPS  Requests,</PackageTags>
     <PackageIcon>horizontal_on_white_by_logaster.png</PackageIcon>
     <PackageIconUrl />
-    <PackageReleaseNotes>DOWNLOAD method is now working.
+    <PackageReleaseNotes>UPDATED headers configuration and folder organization
 </PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageProjectUrl>https://github.com/wellingtonmacena/CosmoRequests</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile></PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="Utils\horizontal_on_white_by_logaster.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
