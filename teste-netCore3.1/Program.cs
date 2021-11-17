@@ -17,8 +17,10 @@ namespace teste_netCore3._1
             //Console.WriteLine(d.GetCompleteResponse());
 
             CosmoRequest cosmoRequest = new CosmoRequest();
-            DownloadResponse downloadResponse = cosmoRequest.DOWNLOAD("https://orimi.com/pdf-test.pdf", @"C:\Users\wellm\Desktop\");
-            Console.WriteLine(downloadResponse);
+
+            var d = cosmoRequest.GET("https://rickandmortyapi.com/api/character/1");
+            //DownloadResponse downloadResponse = cosmoRequest.DOWNLOAD("https://orimi.com/pdf-test.pdf", @"C:\Users\wellm\Desktop\");
+            Console.WriteLine(d);
 
             Console.ReadKey();
         }

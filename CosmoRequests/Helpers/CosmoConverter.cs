@@ -18,5 +18,18 @@ namespace CosmoRequests.Helpers
                 return null;
             }         
         }
+
+        static public T FromResponseToT(CosmoResponse response)
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(response.Body);
+            }
+            catch (System.Exception ex)
+            {
+                System.Console.WriteLine(ex);
+                return default;
+            }
+        }
     }
 }

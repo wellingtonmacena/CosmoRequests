@@ -23,7 +23,7 @@ CosmoResponse response = cosmoRequest.GET(url)
 Console.WriteLine(response);
 `````
 
- >id": 1,
+ >"id": 1,<br>
   "name": "Rick Sanchez",<br>
   "status": "Alive",<br>
   "species": "Human",<br>
@@ -48,8 +48,7 @@ Console.WriteLine(response);
     "https://rickandmortyapi.com/api/episode/7",
     "https://rickandmortyapi.com/api/episode/8",
     "https://rickandmortyapi.com/api/episode/9",
-    <br>
->  ],
+>  ],<br>
   "url": "https://rickandmortyapi.com/api/character/1",<br>
   "created": "2017-11-04T18:48:46.250Z"
  >

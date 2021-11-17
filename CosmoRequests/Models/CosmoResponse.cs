@@ -14,7 +14,7 @@ namespace CosmoRequests.Models
         public string ContentType { get; private set; }
         public long? ContentLength { get; private set; }
         public CookieCollection Cookies { get; private set; }
-        public bool IsSuccessful { get; private set; }
+        public bool IsSuccessful { get => Is200StatusCode();  set { } }
         public string ErrorMessage { get; private set; }
         public WebHeaderCollection Headers { get; private set; }
         public DateTime LastModified { get; private set; }
@@ -34,7 +34,6 @@ namespace CosmoRequests.Models
             this.ContentType = httpWebResponse.ContentType;
             this.ContentLength = httpWebResponse.ContentLength;
             this.Cookies = httpWebResponse.Cookies;
-            this.IsSuccessful = true;
             this.LastModified = httpWebResponse.LastModified;
             this.ResponseUri = httpWebResponse.ResponseUri;
             this.ProtocolVersion = httpWebResponse.ProtocolVersion;
@@ -79,7 +78,6 @@ namespace CosmoRequests.Models
                 this.ContentLength = webException.Response.ContentLength;
                 this.ContentType = webException.Response.ContentType;
                 this.Headers = webException.Response.Headers;
-                this.IsSuccessful = false;
                 this.ResponseUri = webException.Response.ResponseUri;
                 if (!string.IsNullOrWhiteSpace(StatusDescription))
                 {
@@ -97,7 +95,6 @@ namespace CosmoRequests.Models
             this.ClearAttributes();
 
             this.ErrorMessage = e.Message;
-            this.IsSuccessful = false;
             try
             {
                 if (!string.IsNullOrWhiteSpace(StatusDescription))
@@ -135,6 +132,19 @@ namespace CosmoRequests.Models
             Stream dataStream = response.GetResponseStream();
             StreamReader stream = new StreamReader(dataStream);
             return stream.ReadToEnd();
+        }
+
+        private bool Is200StatusCode()
+        {
+            if (this.StatusCode == null)
+                return false;
+
+            for(int index =200; index < 227; index++)
+            {
+                if(this.StatusCode == index)
+                    return true;              
+            }
+            return false;
         }
 
         public override string ToString()
