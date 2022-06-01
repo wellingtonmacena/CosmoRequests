@@ -15,11 +15,10 @@ All of them expect at least one parameter, an url. If you want, you can also pas
 ### How to use
 
 ```C#
-CosmoRequest cosmoRequest = new CosmoRequest();
 
 string url = "https://rickandmortyapi.com/api/character/1";
 
-CosmoResponse response = cosmoRequest.GET(url)
+CosmoResponse response = CosmoRequest.GET(url)
 Console.WriteLine(response);
 `````
 
@@ -57,7 +56,7 @@ Console.WriteLine(response);
 ### PS:   You can also see full response's request using;
 
 `````
-CosmoResponse response = cosmoRequest.GET(url)
+CosmoResponse response = CosmoRequest.GET(url)
 Console.WriteLine(response.GetResponse);
 `````
 
@@ -95,11 +94,11 @@ SupportsHeaders: True,<br>
 ## You can also download file with cosmoRequests
 
 ```C#
-CosmoRequest cosmoRequest = new CosmoRequest();
+
 string url = "https://orimi.com/pdf-test.pdf";
 string folderDestination = @"C:\Users\wellm\Desktop\";
 
-DownloadResponse downloadResponse = cosmoRequest.DOWNLOAD(url, folderDestination);
+DownloadResponse downloadResponse = CosmoRequest.DOWNLOAD(url, folderDestination);
 Console.WriteLine(downloadResponse);
 `````
 
