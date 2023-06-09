@@ -21,8 +21,8 @@ string url = "https://rickandmortyapi.com/api/character/1";
 CosmoResponse response = CosmoRequest.GET(url)
 Console.WriteLine(response);
 `````
-
- >{
+```json
+ {
   "id": 1,
   "name": "Rick Sanchez",
   "status": "Alive",
@@ -52,8 +52,8 @@ Console.WriteLine(response);
   "url": "https://rickandmortyapi.com/api/character/1",
   "created": "2017-11-04T18:48:46.250Z"
 }
- >
- <br>
+ ```
+
 
 ### PS:   You can also see full response's request using;
 
@@ -62,8 +62,9 @@ CosmoResponse response = CosmoRequest.GET(url)
 Console.WriteLine(response.GetResponse);
 `````
 
+```json
 
-> {
+> "Body": {
     "id": 1,
     "name": "Rick Sanchez",
     "status": "Alive",
@@ -124,15 +125,12 @@ Console.WriteLine(response.GetResponse);
     ],
     "url": "https://rickandmortyapi.com/api/character/1",
     "created": "2017-11-04T18:48:46.250Z"
-}
-
-
-> {
+  },
     "ContentEncoding":"",
     "ContentType": "application/json; charset=utf-8",
     ...
-  }
 
+```
 
 <br>
 
@@ -147,6 +145,10 @@ DownloadResponse downloadResponse = CosmoRequest.DOWNLOAD(url, folderDestination
 Console.WriteLine(downloadResponse);
 `````
 
->{FileInfo: C:\Users\wellm\Desktop\\File-2021.11.12 21-49-56-338.pdf,
-IsDownloadSucessful: True}
+```json
+{
+  "FileInfo": "C:\Users\wellm\Desktop\\File-2021.11.12 21-49-56-338.pdf",
+  "IsDownloadSucessful": True}
+
+```
 
