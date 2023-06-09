@@ -9,7 +9,7 @@ namespace CosmoRequests.Models
 {
     public static class CosmoRequest
     {
-        private static WebRequest WebRequest;
+        private static WebRequest webRequest;
 
         public static DownloadResponse DOWNLOAD(string url)
         {
@@ -94,19 +94,20 @@ namespace CosmoRequests.Models
                 Console.WriteLine($"Message: {ex.Message}\nStacktrace: {ex.StackTrace}\nSource: {ex.Source}");
             }
 
-            WebRequest = WebRequest.Create(url);
-            WebRequest.Method = method;
-            WebRequest.ContentType = options.ContentType;
-            WebRequest.UseDefaultCredentials = options.UseDefaultCredentials;
-            WebRequest.Timeout = (int)Math.Round(options.Timeout);
-            WebRequest.Headers = headers;
+            webRequest = WebRequest.Create(url);
+            webRequest.Method = method;
+            webRequest.ContentType = options.ContentType;
+            webRequest.UseDefaultCredentials = options.UseDefaultCredentials;
+            webRequest.Timeout = (int)Math.Round(options.Timeout);
+            webRequest.Headers = headers;
+            webRequest.Proxy = options.WebProxy;
         }
 
         private static CosmoResponse SendWebRequest()
         {
             try
             {
-                HttpWebResponse response = (HttpWebResponse)WebRequest.GetResponse();
+                HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
                 return new CosmoResponse(response);
             }
             catch (WebException webE)
@@ -123,7 +124,7 @@ namespace CosmoRequests.Models
         {
             if (data != null)
             {
-                using (StreamWriter streamWriter = new StreamWriter(WebRequest.GetRequestStream()))
+                using (StreamWriter streamWriter = new StreamWriter(webRequest.GetRequestStream()))
                 {
                     string json = JsonConvert.SerializeObject(data, Formatting.Indented);
                     streamWriter.Write(json);

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net;
+using System.Text;
 
 namespace CosmoRequests.Models
 {
@@ -7,6 +8,7 @@ namespace CosmoRequests.Models
         public double Timeout { get; set; }
         public string ContentType { get; set; }
         public bool UseDefaultCredentials { get; set; }
+        public IWebProxy WebProxy { get; set; }
 
         ///<summary>
         ///Value of timeout must be set in milliseconds. e.g 3000.
@@ -38,6 +40,11 @@ namespace CosmoRequests.Models
             Timeout = timeout;
             ContentType = "application/json";
             UseDefaultCredentials = true;
+        }
+
+        public RequestOptions(double timeout, IWebProxy webProxy):this(timeout)
+        {
+            WebProxy = webProxy;
         }
 
         public override string ToString()
