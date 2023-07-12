@@ -1,25 +1,38 @@
-name: .NET Core Desktop
+name: CI
 
 on:
-  workflow_dispatch
-  
+  create:
+    branches: 
+      - release/**
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+    
 jobs:
   build:
-    runs-on: windows-latest 
-    
+
+    runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .net
-    - uses: actions/setup-dotnet@v2
+    - uses: actions/checkout@v2
+    
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.5
+
+    - name: Restore dependencies
+      run: nuget restore 
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x        
-    - name: restore dependencies
-      run : dotnet restore
-    
-    - name: package build
-      run : dotnet build -c Release -o out
-    
-    - name: Nuget push
-      run: |
-            cd out
-            dotnet nuget push *.nupkg --api-key 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 --source "https://nuget.pkg.github.com/wellmac/index.json --skip-duplicate
+        dotnet-version: 6.0.x
+
+    - name: Build
+      run: dotnet build -c Release -o out
+
+    - name: Nuget Publish
+      if: startsWith(github.ref, 'refs/heads/release')
+      run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}
